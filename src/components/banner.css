@@ -1,0 +1,16 @@
+img {
+    outline: none;
+    border: none; /* Also removes any default border */
+  }
+  
+  img:focus {
+    outline: none;
+  }
+  @media(min-width:320px){
+.one{
+  left:-80px !important;
+position: relative;
+}
+    
+    
+  }
