@@ -32,7 +32,7 @@ const Arrival = () => {
   // Slick slider settings
   const settings = {
     infinite: true,
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     nextArrow: <SampleNextArrow />,  // Add custom next arrow
@@ -58,6 +58,7 @@ const Arrival = () => {
   return (
     <Container className="pt-10">
       <div className="!w-[97%] mx-3">
+      <h2 className='font-dm text-[24px] sm:text-[30px] font-bold'>New Arrivals</h2>
         <Slider {...settings}>
           {data.map((item,index) => (
             <div key={item.id} className="px-2">
