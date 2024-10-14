@@ -8,6 +8,7 @@ import Phone from '../components/Phone'
 import Offers from '../components/Offers'
 import Footer from '../components/Footer'
 import Arrival from '../components/Arrival'
+import Newarrivals from '../components/Newarrivals'
 
 
 const Home = () => {
@@ -16,7 +17,7 @@ const Home = () => {
  <Navbar/>
  <Banner/>
  <Light/>
- <Arrival/>
+ <Newarrivals/>
 
  <Seller/>
  <Phone/>
