@@ -1,31 +1,66 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Container from "../components/Container";
-import { FaPlus, FaMinus } from "react-icons/fa6";
+import { FaMinus, FaPlus } from "react-icons/fa";
 import Post from "../components/Post";
-import { ApiData } from "../components/ContextApi";
 import Pagination from "../components/Pagination";
+import { ApiData } from "../components/ContextApi";
+import { FaList } from "react-icons/fa6";
+import { IoGrid } from "react-icons/io5";
 
 const Shop = () => {
-  let {info, loading} = useContext(ApiData)
+  let { info, loading } = useContext(ApiData);
   let [show, setShow] = useState(false);
-  let [currentPage, setCurrentPage] = useState(1)
-  let [perPage, setPerPage] = useState(6)
-
-  let lastPage = currentPage * perPage
-  let firstPage = lastPage - perPage
-  let allPage = info.slice(firstPage, lastPage)
-
-  let pageNumber = []
-
-  for(let i = 0; i < Math.ceil(info.length / perPage); i++){
-    pageNumber.push(i)
+  let [currentPage, setCurrentPage] = useState(1);
+  let [perPage, setPerPage] = useState(6);
+  let [activeGrid, setActiveGrid] = useState("");
+  let [category, setCategory] = useState([]);
+  let [categoryFilter, setCategoryFilter] = useState([]);
+  let lastPage = currentPage * perPage;
+  let firstPage = lastPage - perPage;
+  let allPage = info.slice(firstPage, lastPage);
+  let pageNumber = [];
+  for (
+    let i = 0;
+    i <
+    Math.ceil(
+      categoryFilter.length > 0 ? categoryFilter : info.length / perPage
+    );
+    i++
+  ) {
+    pageNumber.push(i);
   }
 
-  console.log(pageNumber);
-  
-  
-  
+  let paginate = (paginate) => {
+    setCurrentPage(paginate + 1);
+  };
 
+  let next = () => {
+    if (currentPage < pageNumber.length) {
+      setCurrentPage((state) => state + 1);
+    }
+  };
+  let prev = () => {
+    if (currentPage > 1) {
+      setCurrentPage((state) => state - 1);
+    }
+  };
+
+  let handleMulti = () => {
+    setActiveGrid("active");
+  };
+
+  useEffect(() => {
+    setCategory([...new Set(info.map((item) => item.category))]);
+  }, [info]);
+
+  let handleCategory = (citem) => {
+    let filterItem = info.filter((item) => item.category == citem);
+    setCategoryFilter(filterItem);
+  };
+
+  let handlechange = (e) => {
+    setPerPage(e.target.value);
+  };
 
   return (
     <section>
@@ -45,53 +80,83 @@ const Shop = () => {
               </div>
               {show && (
                 <ul>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
+                  {category.map((item) => (
+                    <li
+                      onClick={() => handleCategory(item)}
+                      className="capitalize text-[20px] text-[#262626] font-mono py-1"
+                    >
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               )}
             </div>
           </div>
-          <div className="w-4/5">
-            <div className="pt-8 flex justify-end items-center gap-x-10">
+          <div className="w-4/5 pt-8">
+            <div className="flex items-center justify-between">
               <div className="">
-                <label className="pr-3" htmlFor="">
-                  Sort By :
-                </label>
-                <select
-                  className="w-[60px] h-[30px] border-[1px] border-[#262626]"
-                  name=""
-                  id=""
-                >
-                  <option value="">one</option>
-                  <option value="">Two</option>
-                  <option value="">Three</option>
-                  <option value="">Four</option>
-                </select>
+                <div className="flex items-center gap-x-4">
+                  <div
+                    onClick={() => setActiveGrid("")}
+                    className="p-3 hover:bg-[gray] text-[#222]"
+                  >
+                    <IoGrid />
+                  </div>
+                  <div
+                    onClick={handleMulti}
+                    className="p-3 hover:bg-[gray] text-[#222]"
+                  >
+                    <FaList />
+                  </div>
+                </div>
               </div>
-              <div className="">
-                <label className="pr-3" htmlFor="">
-                  Show:
-                </label>
-                <select
-                  className="w-[60px] h-[30px] border-[1px] border-[#262626]"
-                  name=""
-                  id=""
-                >
-                  <option value="">one</option>
-                  <option value="">Two</option>
-                  <option value="">Three</option>
-                  <option value="">Four</option>
-                </select>
+              <div className="flex justify-end items-center gap-x-10">
+                <div className="">
+                  <label className="pr-3" htmlFor="">
+                    Sort By :
+                  </label>
+                  <select
+                    onChange={handlechange}
+                    className="w-[60px] h-[30px] border-[1px] border-[#262626]"
+                    name=""
+                    id=""
+                  >
+                    <option value="6">6</option>
+                    <option value="12">12</option>
+                    <option value="18">18</option>
+                  </select>
+                </div>
+                <div className="">
+                  <label className="pr-3" htmlFor="">
+                    Show:
+                  </label>
+                  <select
+                    className="w-[60px] h-[30px] border-[1px] border-[#262626]"
+                    name=""
+                    id=""
+                  >
+                    <option value="">one</option>
+                    <option value="">one</option>
+                    <option value="">one</option>
+                    <option value="">one</option>
+                  </select>
+                </div>
               </div>
             </div>
-
             <div className="flex justify-between flex-wrap">
-              <Post allPage={allPage} />
+              <Post
+                allPage={allPage}
+                activeGrid={activeGrid}
+                categoryFilter={categoryFilter}
+              />
               <div className="py-10 flex justify-center w-full">
-              <Pagination pageNumber={pageNumber}/>
+                <Pagination
+                  pageNumber={pageNumber}
+                  paginate={paginate}
+                  next={next}
+                  prev={prev}
+                  currentPage={currentPage}
+                />
               </div>
             </div>
           </div>
