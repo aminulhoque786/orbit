@@ -90,10 +90,10 @@ const Shop = () => {
           <div className="w-1/5">
             <div className="pr-6 pt-8">
               <div
-                className="flex justify-between items-center"
+                className="flex items-center"
                 onClick={() => setShow(!show)}
               >
-                <h2 className="text-[#262626] font-bold text-[20px] font-sans">
+                <h2 className="text-[#262626] font-bold text-[20px] w-[150px]  font-sans">
                   Shop by Category
                 </h2>
 
@@ -120,10 +120,10 @@ const Shop = () => {
             </div>
             <div className="mt-10">
               <div
-                className="flex justify-between items-center cursor-pointer"
+                className="flex  cursor-pointer"
                 onClick={() => setShowPrice(!showPrice)}
               >
-                <h2 className="text-[#262626] font-bold text-[20px] font-sans">
+                <h2 className="text-[#262626] font-bold w-[150px] text-[20px] font-sans">
                   Show Price
                 </h2>
                 {showPrice ? <FaMinus /> : <FaPlus />}
