@@ -13,6 +13,7 @@ const Shop = () => {
   let [priceShow, setPriceShow] = useState([]);
   let { info, loading } = useContext(ApiData);
   let [show, setShow] = useState(false);
+  let [showPrice, setShowPrice] = useState(false); // New state for price dropdown
   let [currentPage, setCurrentPage] = useState(1);
   let [perPage, setPerPage] = useState(6);
   let [activeGrid, setActiveGrid] = useState("");
@@ -117,24 +118,32 @@ const Shop = () => {
                 </ul>
               )}
             </div>
-            <div className="">
-              <h2 className="text-[#262626] font-bold text-[20px] font-sans mt-10">
-                Show Price
-              </h2>
-              <ul>
-                <li onClick={() => handlePrice({ low: 0, high: 5 })}>
-                  $0 - $05
-                </li>
-                <li onClick={() => handlePrice({ low: 6, high: 10 })}>
-                  $6 - $10
-                </li>
-                <li onClick={() => handlePrice({ low: 11, high: 15 })}>
-                  $11 - $15
-                </li>
-                <li onClick={() => handlePrice({ low: 16, high: 25 })}>
-                  $16 - $20
-                </li>
-              </ul>
+            <div className="mt-10">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setShowPrice(!showPrice)}
+              >
+                <h2 className="text-[#262626] font-bold text-[20px] font-sans">
+                  Show Price
+                </h2>
+                {showPrice ? <FaMinus /> : <FaPlus />}
+              </div>
+              {showPrice && (
+                <ul>
+                  <li onClick={() => handlePrice({ low: 0, high: 5 })}>
+                    $0 - $05
+                  </li>
+                  <li onClick={() => handlePrice({ low: 6, high: 10 })}>
+                    $6 - $10
+                  </li>
+                  <li onClick={() => handlePrice({ low: 11, high: 15 })}>
+                    $11 - $15
+                  </li>
+                  <li onClick={() => handlePrice({ low: 16, high: 25 })}>
+                    $16 - $20
+                  </li>
+                </ul>
+              )}
             </div>
           </div>
           <div className="w-4/5 pt-8">
