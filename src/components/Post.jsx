@@ -6,10 +6,11 @@ import { FaCartPlus } from "react-icons/fa";
 import { ApiData } from "./ContextApi";
 import { Link } from "react-router-dom";
 
-const Post = ({ allPage, activeGrid, categoryFilter }) => {
+const Post = ({ allPage, activeGrid, categoryFilter,priceShow }) => {
   let { info, loading } = useContext(ApiData);
   let [filterShow, setFilterShow] = useState([]);
   let [count, setCount] = useState(true);
+  
 
   useEffect(() => {
     let fiveFilter = categoryFilter.slice(0, 5);
@@ -72,18 +73,14 @@ const Post = ({ allPage, activeGrid, categoryFilter }) => {
           <div className="">
             {count
               ? categoryFilter.length > 5 && (
-                  <div onClick={handleSee} className="border border-gray-400 px-4 py-2 rounded hover:bg-gray-500 hover:border-gray-600 hover:text-white cursor-pointer transition-colors duration-200">
+                  <div onClick={handleSee} className="">
                     <h2>See more</h2>
                   </div>
                 )
               : categoryFilter.length > 5 && (
-                <div
-                onClick={handleSeeless}
-                className="border border-gray-400 px-4 py-2 rounded hover:bg-gray-500 hover:text-white hover:border-gray-600 cursor-pointer transition-colors duration-200"
-              >
-                <h2>See Less</h2>
-              </div>
-              
+                  <div onClick={handleSeeless} className="">
+                    <h2>See Less</h2>
+                  </div>
                 )}
           </div>
         </>

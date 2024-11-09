@@ -8,6 +8,9 @@ import { FaList } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
 
 const Shop = () => {
+  let [low, setLow] = useState("");
+  let [high, setHigh] = useState("");
+  let [priceShow, setPriceShow] = useState([]);
   let { info, loading } = useContext(ApiData);
   let [show, setShow] = useState(false);
   let [currentPage, setCurrentPage] = useState(1);
@@ -62,6 +65,23 @@ const Shop = () => {
     setPerPage(e.target.value);
   };
 
+  let handleAll = () => {
+    setCategoryFilter("");
+  };
+
+  let handlePrice = (value) => {
+    setLow(value.low);
+    setHigh(value.high);
+    let priceRange = info.filter(
+      (item) => item.price > value.low && item.price < value.high
+    );
+    if (priceRange.length > 0) {
+      setCategoryFilter(priceRange);
+    } else {
+      setCategoryFilter("");
+    }
+  };
+
   return (
     <section>
       <Container>
@@ -80,16 +100,41 @@ const Shop = () => {
               </div>
               {show && (
                 <ul>
+                  <li
+                    onClick={handleAll}
+                    className="capitalize text-[#262626] font-mono font-bold text-[20px] py-1"
+                  >
+                    All Product
+                  </li>
                   {category.map((item) => (
                     <li
                       onClick={() => handleCategory(item)}
-                      className="capitalize text-[20px] text-[#262626] font-mono py-1"
+                      className="capitalize text-[#262626] font-mono font-bold  text-[20px]  py-1"
                     >
                       {item}
                     </li>
                   ))}
                 </ul>
               )}
+            </div>
+            <div className="">
+              <h2 className="text-[#262626] font-bold text-[20px] font-sans mt-10">
+                Show Price
+              </h2>
+              <ul>
+                <li onClick={() => handlePrice({ low: 0, high: 5 })}>
+                  $0 - $05
+                </li>
+                <li onClick={() => handlePrice({ low: 6, high: 10 })}>
+                  $6 - $10
+                </li>
+                <li onClick={() => handlePrice({ low: 11, high: 15 })}>
+                  $11 - $15
+                </li>
+                <li onClick={() => handlePrice({ low: 16, high: 25 })}>
+                  $16 - $20
+                </li>
+              </ul>
             </div>
           </div>
           <div className="w-4/5 pt-8">
@@ -148,6 +193,7 @@ const Shop = () => {
                 allPage={allPage}
                 activeGrid={activeGrid}
                 categoryFilter={categoryFilter}
+                priceShow={priceShow}
               />
               <div className="py-10 flex justify-center w-full">
                 <Pagination
