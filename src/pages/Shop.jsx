@@ -64,7 +64,7 @@ const Shop = () => {
 
   useEffect(() => {
     setCategory([...new Set(info.map((item) => item.category))]);
-    setBrands([...new Set(info.map((item) => item.brand))]); 
+    setBrands([...new Set(info.map((item) => item.brand))]);
   }, [info]);
 
   let handleCategory = (citem) => {
@@ -99,7 +99,10 @@ const Shop = () => {
         <div className="flex">
           <div className="w-1/5">
             <div className="pr-6 pt-8">
-              <div className="flex items-center cursor-pointer" onClick={() => setShow(!show)}>
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => setShow(!show)}
+              >
                 <h2 className="text-[#262626] font-bold text-[20px] w-[150px]  font-sans">
                   Shop by Category
                 </h2>
@@ -132,11 +135,7 @@ const Shop = () => {
                 <h2 className="text-[#262626] font-bold w-[150px] text-[20px] font-sans">
                   Show Price
                 </h2>
-                {showPrice ? (
-                  <IoMdArrowDropup />
-                ) : (
-                  <IoMdArrowDropdown />
-                )}
+                {showPrice ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
               </div>
               {showPrice && (
                 <ul>
@@ -156,39 +155,34 @@ const Shop = () => {
               )}
             </div>
 
-            {/* Shop by Brand */}
-            <div className="mt-10">
+            
+            <div className="mt-10 ">
               <div
-                className="flex cursor-pointer"
+                className="flex cursor-pointer "
                 onClick={() => setShowBrand(!showBrand)}
               >
                 <h2 className="text-[#262626] font-bold w-[150px] text-[20px] font-sans">
                   Shop by Brand
                 </h2>
-                {showBrand ? (
-                  <IoMdArrowDropup />
-                ) : (
-                  <IoMdArrowDropdown />
-                )}
+                {showBrand ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
               </div>
+              <div className="w-[500px]">
               {showBrand && (
+                
                 <ul>
                   {brands.map((brand, index) => (
-                    <li
+                    <li 
                       key={index}
                       onClick={() => handleBrand(brand)}
                       className="capitalize text-[#262626] font-mono text-[20px] py-1"
                     >
-                      
-                      
-                        {brand}
-                       
-                  
-      
+                      {brand}
                     </li>
                   ))}
                 </ul>
               )}
+              </div>
+              
             </div>
           </div>
 

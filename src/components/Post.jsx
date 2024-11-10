@@ -69,17 +69,23 @@ const Post = ({ allPage, activeGrid, categoryFilter, priceShow }) => {
               </div>
             ))}
           </div>
-          <div className="">
+          <div className=" pt-10">
             {count
               ? categoryFilter.length > 5 && (
-                  <div onClick={handleSee} className="">
-                    <h2>See more</h2>
-                  </div>
+                <div
+                onClick={handleSee}
+                className="border  border-gray-500 p-2 rounded-lg cursor-pointer hover:text-white hover:bg-black active:bg-gray-300 transition-all"
+              >
+                <h2>See more</h2>
+              </div>
                 )
               : categoryFilter.length > 5 && (
-                  <div onClick={handleSeeless} className="">
-                    <h2>See Less</h2>
-                  </div>
+                <div
+                onClick={handleSeeless}
+                className="border border-gray-500 p-2 rounded-lg cursor-pointer hover:text-white hover:bg-black active:bg-gray-300 transition-all"
+              >
+                <h2>See less</h2>
+              </div>
                 )}
           </div>
         </>

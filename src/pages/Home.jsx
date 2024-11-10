@@ -22,7 +22,7 @@ const Home = () => {
  <Seller/>
  <Phone/>
  <Offers/>
- <Footer/>
+ 
    </>
   )
 }
