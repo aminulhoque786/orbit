@@ -6,11 +6,10 @@ import { FaCartPlus } from "react-icons/fa";
 import { ApiData } from "./ContextApi";
 import { Link } from "react-router-dom";
 
-const Post = ({ allPage, activeGrid, categoryFilter,priceShow }) => {
+const Post = ({ allPage, activeGrid, categoryFilter, priceShow }) => {
   let { info, loading } = useContext(ApiData);
   let [filterShow, setFilterShow] = useState([]);
   let [count, setCount] = useState(true);
-  
 
   useEffect(() => {
     let fiveFilter = categoryFilter.slice(0, 5);

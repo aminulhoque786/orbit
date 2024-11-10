@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Container from "../components/Container";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import Post from "../components/Post";
+import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import Pagination from "../components/Pagination";
 import { ApiData } from "../components/ContextApi";
 import { FaList } from "react-icons/fa6";
@@ -16,9 +17,12 @@ const Shop = () => {
   let [showPrice, setShowPrice] = useState(false); // New state for price dropdown
   let [currentPage, setCurrentPage] = useState(1);
   let [perPage, setPerPage] = useState(6);
+  let [showBrand, setShowBrand] = useState(false);
   let [activeGrid, setActiveGrid] = useState("");
   let [category, setCategory] = useState([]);
   let [categoryFilter, setCategoryFilter] = useState([]);
+  let [brands, setBrands] = useState([]); // State to store unique brands
+
   let lastPage = currentPage * perPage;
   let firstPage = lastPage - perPage;
   let allPage = info.slice(firstPage, lastPage);
@@ -33,6 +37,11 @@ const Shop = () => {
   ) {
     pageNumber.push(i);
   }
+
+  let handleBrand = (brandName) => {
+    let filterItem = info.filter((item) => item.brand === brandName);
+    setCategoryFilter(filterItem);
+  };
 
   let paginate = (paginate) => {
     setCurrentPage(paginate + 1);
@@ -55,6 +64,7 @@ const Shop = () => {
 
   useEffect(() => {
     setCategory([...new Set(info.map((item) => item.category))]);
+    setBrands([...new Set(info.map((item) => item.brand))]); 
   }, [info]);
 
   let handleCategory = (citem) => {
@@ -89,28 +99,24 @@ const Shop = () => {
         <div className="flex">
           <div className="w-1/5">
             <div className="pr-6 pt-8">
-              <div
-                className="flex items-center"
-                onClick={() => setShow(!show)}
-              >
+              <div className="flex items-center cursor-pointer" onClick={() => setShow(!show)}>
                 <h2 className="text-[#262626] font-bold text-[20px] w-[150px]  font-sans">
                   Shop by Category
                 </h2>
-
                 {show ? <FaMinus /> : <FaPlus />}
               </div>
               {show && (
                 <ul>
                   <li
                     onClick={handleAll}
-                    className="capitalize text-[#262626] font-mono font-bold text-[20px] py-1"
+                    className="capitalize text-[#262626] font-mono  text-[20px] py-1"
                   >
                     All Product
                   </li>
                   {category.map((item) => (
                     <li
                       onClick={() => handleCategory(item)}
-                      className="capitalize text-[#262626] font-mono font-bold  text-[20px]  py-1"
+                      className="capitalize text-[#262626] font-mono   text-[20px]  py-1"
                     >
                       {item}
                     </li>
@@ -126,7 +132,11 @@ const Shop = () => {
                 <h2 className="text-[#262626] font-bold w-[150px] text-[20px] font-sans">
                   Show Price
                 </h2>
-                {showPrice ? <FaMinus /> : <FaPlus />}
+                {showPrice ? (
+                  <IoMdArrowDropup />
+                ) : (
+                  <IoMdArrowDropdown />
+                )}
               </div>
               {showPrice && (
                 <ul>
@@ -145,9 +155,45 @@ const Shop = () => {
                 </ul>
               )}
             </div>
+
+            {/* Shop by Brand */}
+            <div className="mt-10">
+              <div
+                className="flex cursor-pointer"
+                onClick={() => setShowBrand(!showBrand)}
+              >
+                <h2 className="text-[#262626] font-bold w-[150px] text-[20px] font-sans">
+                  Shop by Brand
+                </h2>
+                {showBrand ? (
+                  <IoMdArrowDropup />
+                ) : (
+                  <IoMdArrowDropdown />
+                )}
+              </div>
+              {showBrand && (
+                <ul>
+                  {brands.map((brand, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleBrand(brand)}
+                      className="capitalize text-[#262626] font-mono text-[20px] py-1"
+                    >
+                      
+                      
+                        {brand}
+                       
+                  
+      
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
+
           <div className="w-4/5 pt-8">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center cursor-pointer justify-between">
               <div className="">
                 <div className="flex items-center gap-x-4">
                   <div
@@ -172,27 +218,10 @@ const Shop = () => {
                   <select
                     onChange={handlechange}
                     className="w-[60px] h-[30px] border-[1px] border-[#262626]"
-                    name=""
-                    id=""
                   >
                     <option value="6">6</option>
                     <option value="12">12</option>
                     <option value="18">18</option>
-                  </select>
-                </div>
-                <div className="">
-                  <label className="pr-3" htmlFor="">
-                    Show:
-                  </label>
-                  <select
-                    className="w-[60px] h-[30px] border-[1px] border-[#262626]"
-                    name=""
-                    id=""
-                  >
-                    <option value="">one</option>
-                    <option value="">one</option>
-                    <option value="">one</option>
-                    <option value="">one</option>
                   </select>
                 </div>
               </div>
