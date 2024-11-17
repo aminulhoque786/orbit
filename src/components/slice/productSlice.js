@@ -1,21 +1,47 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: 0,
-}
+  CartItem: localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [],
+};
 
 export const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    addToCart: (state,action) => {
-        console.log(action.payload);
+    addToCart: (state, action) => {
+      let findProduct = state.CartItem.findIndex((item) => item.id === action.payload.id);
+      if (findProduct !== -1) {
+        state.CartItem[findProduct].qun += 1;
+        localStorage.setItem("cart", JSON.stringify(state.CartItem));
+      } else {
+        state.CartItem = [...state.CartItem, action.payload];
+        localStorage.setItem("cart", JSON.stringify(state.CartItem));
+      }
     },
-    
+    productIncrement: (state, action) => {
+      const productId = action.payload;
+      const product = state.CartItem.find((item) => item.id === productId);
+      if (product) {
+        product.qun += 1;
+        localStorage.setItem("cart", JSON.stringify(state.CartItem));
+      }
+    },
+    productDecrement: (state, action) => {
+      const productId = action.payload;
+      const product = state.CartItem.find((item) => item.id === productId);
+      if (product) {
+        if (product.qun > 1) {
+          product.qun -= 1;
+        } else {
+          state.CartItem = state.CartItem.filter((item) => item.id !== productId);
+        }
+        localStorage.setItem("cart", JSON.stringify(state.CartItem));
+      }
+    },
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-export const { addToCart } = productSlice.actions
+export const { addToCart, productIncrement, productDecrement } = productSlice.actions;
 
-export default productSlice.reducer
+export default productSlice.reducer;
+
