@@ -1,15 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  CartItem: localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [],
+  CartItem: localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [],
 };
 
 export const productSlice = createSlice({
-  name: 'product',
+  name: "product",
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      let findProduct = state.CartItem.findIndex((item) => item.id === action.payload.id);
+      let findProduct = state.CartItem.findIndex(
+        (item) => item.id === action.payload.id
+      );
       if (findProduct !== -1) {
         state.CartItem[findProduct].qun += 1;
         localStorage.setItem("cart", JSON.stringify(state.CartItem));
@@ -32,8 +36,6 @@ export const productSlice = createSlice({
       if (product) {
         if (product.qun > 1) {
           product.qun -= 1;
-        } else {
-          state.CartItem = state.CartItem.filter((item) => item.id !== productId);
         }
         localStorage.setItem("cart", JSON.stringify(state.CartItem));
       }
@@ -41,7 +43,7 @@ export const productSlice = createSlice({
   },
 });
 
-export const { addToCart, productIncrement, productDecrement } = productSlice.actions;
+export const { addToCart, productIncrement, productDecrement } =
+  productSlice.actions;
 
 export default productSlice.reducer;
-
