@@ -2,14 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { IoGitCompare } from "react-icons/io5";
 import { FaCartPlus } from "react-icons/fa";
-
 import { ApiData } from "./ContextApi";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "./slice/productSlice";
 
-const Post = ({ allPage, activeGrid, categoryFilter, priceShow }) => {
+const Post = ({ allPage, activeGrid, categoryFilter,priceShow }) => {
   let { info, loading } = useContext(ApiData);
   let [filterShow, setFilterShow] = useState([]);
   let [count, setCount] = useState(true);
+  let dispatch = useDispatch()
+
+  
+  
 
   useEffect(() => {
     let fiveFilter = categoryFilter.slice(0, 5);
@@ -20,12 +25,15 @@ const Post = ({ allPage, activeGrid, categoryFilter, priceShow }) => {
     setFilterShow(categoryFilter);
     setCount(false);
   };
-
   let handleSeeless = () => {
     let fiveFilter = categoryFilter.slice(0, 5);
     setFilterShow(fiveFilter);
     setCount(true);
   };
+
+  let handleCartProduct = (item) =>{
+    dispatch(addToCart({...item, qun:1}))
+  }
 
   return (
     <>
@@ -69,23 +77,17 @@ const Post = ({ allPage, activeGrid, categoryFilter, priceShow }) => {
               </div>
             ))}
           </div>
-          <div className=" pt-10">
+          <div className="">
             {count
               ? categoryFilter.length > 5 && (
-                <div
-                onClick={handleSee}
-                className="border  border-gray-500 p-2 rounded-lg cursor-pointer hover:text-white hover:bg-black active:bg-gray-300 transition-all"
-              >
-                <h2>See more</h2>
-              </div>
+                  <div onClick={handleSee} className="">
+                    <h2>See more</h2>
+                  </div>
                 )
               : categoryFilter.length > 5 && (
-                <div
-                onClick={handleSeeless}
-                className="border border-gray-500 p-2 rounded-lg cursor-pointer hover:text-white hover:bg-black active:bg-gray-300 transition-all"
-              >
-                <h2>See less</h2>
-              </div>
+                  <div onClick={handleSeeless} className="">
+                    <h2>See Less</h2>
+                  </div>
                 )}
           </div>
         </>
@@ -109,7 +111,7 @@ const Post = ({ allPage, activeGrid, categoryFilter, priceShow }) => {
                     <li className="py-2">
                       Compare <IoGitCompare className="inline-block" />
                     </li>
-                    <li className="py-2">
+                    <li onClick={()=>handleCartProduct(item)} className="py-2 cursor-pointer">
                       Add to Cart <FaCartPlus className="inline-block" />
                     </li>
                   </ul>
