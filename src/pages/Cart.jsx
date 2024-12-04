@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Container from '../components/Container'
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import { ImCross } from "react-icons/im";
 import { useDispatch, useSelector } from 'react-redux'
 import { productDecrement, productIncrement, removeProduct } from '../components/slice/productSlice';
+import { ApiData } from '../components/ContextApi';
 
 const Cart = () => {
+  let { info, loading } = useContext(ApiData);
   let cartInfo = useSelector((state)=>state.product.cartItem)
   let dispatch = useDispatch()
   let handleIncrement = (i) =>{
@@ -19,6 +21,18 @@ const Cart = () => {
   let handlePremove = (i) =>{
     dispatch(removeProduct(i))
   }
+
+  let {totalPrice, totalQuantity} = cartInfo.reduce((acc, item)=>{
+    acc.totalPrice += item.price * item.qun
+    acc.totalQuantity += item.qun
+
+    console.log(acc);
+    return acc
+    
+  },{totalPrice:0, totalQuantity:0})
+  
+  
+
 
 
   
@@ -115,7 +129,54 @@ const Cart = () => {
               </div>
               </div>
         ))}
+        <div className="flex justify-end">
+          <div className="w-[30%]">
+            <h2 className='text-end font-sans text-[20px] font-bold capitalize'>Carts Details</h2>
+            <div className="flex flex-col">
+  <div className="-m-1.5 overflow-x-auto">
+    <div className="p-1.5 min-w-full inline-block align-middle">
+      <div className="overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-gray-500 uppercase">SubTotal</th>
+              <th scope="col" className="px-6 py-3 text-start text-[16px] font-bold text-gray-500 uppercase">${totalPrice}</th>
+        
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            <tr>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-bold">Quantity</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{totalQuantity}</td>
+              
+            </tr>
 
+            
+
+            
+          </tbody>
+          <tbody className="divide-y divide-gray-200">
+            <tr>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-800">Total</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${totalPrice}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+        <div className="text-end">
+
+        <Link to="/checkout">
+        <button className="px-[20px] md:px-[40px] py-[12px] md:py-[16px] text-[10px] md:text-[12px] font-bold border-2 border-[#000] me-3 hover:bg-black hover:text-white duration-300">
+        Proceed to Checkout
+        </button>
+        </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          </div>
+        </div>
         </Container>
       </section>
   )

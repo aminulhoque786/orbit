@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import Flex from "./Flex";
 import { HiMiniBars2 } from "react-icons/hi2";
@@ -7,16 +7,19 @@ import { FaUser } from "react-icons/fa6";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoCart } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-
+import CartImg from "../assets/jhuri.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { removeProduct } from "./slice/productSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { ApiData } from "./ContextApi";
 
 const Navbar = () => {
   let data = useSelector((state)=> state.product.cartItem)
+  let { info, loading } = useContext(ApiData);
   let dispatch = useDispatch()
   let navigate = useNavigate()
-  
+  let [search, setSearch] = useState("")
+  let [searchFilter, setSearchFilter] = useState([])
   let cateRef = useRef();
   let accRef = useRef();
   let cartRef = useRef();
@@ -48,7 +51,6 @@ const Navbar = () => {
     });
   }, [isCateNav, isAcc, isCart]);
 
-
   let handleCartPage = () =>{
     navigate("/cart")
     setIsCart(false)
@@ -58,6 +60,23 @@ const Navbar = () => {
     navigate("/checkout")
     setIsCart(false)
   }
+
+  let handleChange = (e) =>{
+    setSearch(e.target.value);
+    if(e.target.value == ""){
+      setSearchFilter([])
+    }else{
+      let searchOneByOne = info.filter((item)=>item.title.toLowerCase().includes(e.target.value.toLowerCase()))
+      setSearchFilter(searchOneByOne)
+    }
+  }
+
+  let handleSearchId = (id) =>{
+   navigate(`/shop/${id}`)
+   setSearchFilter([])
+   setSearch("")
+  }
+  
 
   return (
     <section className="bg-[#F5F5F3] py-[25px]">
@@ -95,12 +114,39 @@ const Navbar = () => {
           </div>
           <div className="w-1/2">
             <div className="relative">
-              <input
+              <input onChange={handleChange}
                 type="search"
-                className="py-3 pl-2 w-full rounded-sm  outline-none"
+                className="py-3 pl-2 w-full rounded-sm outline-none"
                 placeholder="Search.."
+                value={search}
               />
               <ImSearch className="absolute top-[50%] translate-y-[-50%] right-4" />
+              {searchFilter.length > 0 &&
+              <div className="absolute left-0 top-[50px] mt-2 w-[560px] h-[400px] overflow-y-scroll bg-[rgba(233,230,230,0.9)] z-[1]">
+                  {searchFilter.map((item, i)=>(
+              
+                  <div onClick={()=>handleSearchId(item.id)} className="flex items-center bg-white py-4 px-5 cursor-pointer">
+                    <div>
+                      <img
+                        className="w-[80px] md:w-[150px]"
+                        src={item.thumbnail}
+                        alt="Cart item"
+                      />
+                    </div>
+                    <div className="flex-grow">
+                      <div className="font-DM font-bold text-[14px] ml-3">
+                        <h3>{item.title}</h3>
+                      </div>
+                     
+                    </div>
+                    
+                  </div>
+                  
+           
+                  ))}
+                  
+                </div>
+            }
             </div>
           </div>
           <div className="w-1/4">
