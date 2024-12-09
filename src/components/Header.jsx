@@ -35,7 +35,9 @@ const Header = () => {
             <Link to="/contact">Contact</Link>
           </li>
           <li className="hover:text-[#262626] duration-300 ease-in-out hover:font-bold">
-            Journal
+          {" "}
+          <Link to="/registration">registration</Link>
+           
           </li>
         </ul>
       </div>
